@@ -1,0 +1,12 @@
+20170508 19:00  193.20  131.72    3.5  gerando    3.5    gerando     editar
+20170508 20:00  193.37  131.72    3.5  gerando    3.5    gerando     editar
+20170508 21:00  193.51  131.72    3.5  gerando    3.5    gerando     editar
+20170508 22:00  193.69  131.79    3.5  gerando    3.5    gerando     editar
+20170508 23:00  193.84  131.83    3.5  gerando    3.5    gerando     editar
+20170508 23:59  193.96  131.86    3.5  gerando    3.5    gerando     editar
+20170509 01:00  194.06  131.88    3.5  gerando    3.5    gerando     editar
+20170509 02:00  194.18  131.91    3.5  gerando    3.5    gerando     editar
+20170509 03:00  194.30  131.94    3.5  gerando    3.5    gerando     editar
+20170509 04:00  194.43  131.82    3.5  gerando    3.5    gerando     editar
+20170509 05:00  194.55  131.74    3.5  gerando    3.5    gerando     editar
+20170509 06:00  194.59  132.13    3.5  gerando    3.5    gerando     editar

@@ -1,0 +1,256 @@
+<?php
+
+//~ Template for controlevazaouhpj.php
+// variables:
+//  $errors - validation errors
+//  $multigeracaouhpjuhpjgeracao - submitted Leirura
+//  $edit - true for EDIT, false for ADD
+function error_field($title, array $errors) {
+    foreach ($errors as $error) {
+        /* @var $error Error */
+        if ($error->getSource() == $title) {
+            return ' error-field';
+        }
+    }
+    return '';
+}
+
+/* @var $multigeracaouhpj Multi */
+?>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/estilos.css" type="text/css" />
+    <link rel="stylesheet" href="css/botoes.css" type="text/css" />
+</head>
+<section>     
+    <h1>
+        <?php if ($edit): ?>
+            <?php echo Utils::escape($multi->getMontante()); ?>
+        <?php else: ?>
+            Adicionar novo registro em UHPJ
+        <?php endif; ?>
+    </h1>
+    <?php if (!empty($errors)): ?>
+        <ul class="errors">
+            <?php foreach ($errors as $error): ?>
+                <?php /* @var $error Error */ ?>
+                <li><?php echo $error->getMessage(); ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    <!-- Quadro principal -->
+    <div style="border: 1px solid #9da1ac;padding: 5px 5px 5px 5px;width:620px;background-color:#eee;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;">
+        <div class="clear" id="holder" style="font-size:11px;margin:5px 5px 5px 5px;width:610px">   
+            <form action='#'  method='post' name='formulario'>
+                <!--Inicio Formulário --> 
+                <fieldset>
+                    <div class="box4 center" style="background-color:#f5f5f5;margin:1px;width:590px;border-width:1px">  
+                        <div class="box4 left" style="background-color:#f5f5f5;margin:2px;width:100px;height:110px;border-width:1px">
+                            <b> Data e Hora </b><hr />
+                            <div class="field">
+                                <label>Data:</label>
+                                <input type="text" name="multi[data]" maxlength='10' size='10' value="<?php echo Utils::escape($multi->getData()); ?>"
+                                       class="text<?php echo error_field('data', $errors); ?>"/>
+                            </div>
+                            <div class="field">
+                                <label>Hora:</label>
+                                <input type="text" name="multi[hora]" maxlength='6' size='8' value="<?php echo Utils::escape($multi->getHora()); ?>"
+                                       class="text<?php echo error_field('hora', $errors); ?>"/>
+                            </div>
+                        </div>         
+                        <div class="box4 left" style="background-color:#f5f5f5;margin:2px;width:120px;height:110px;border-width:1px">
+                            <b> Níveis </b> <hr />
+                            <div class="field">
+                                <label>Nível Montante(m):</label>
+                                <input type="text" name="multi[nivel_montante]" maxlength='6' size='8' value="<?php echo Utils::escape($multi->getMontante()); ?>"                                       
+                                       class="text<?php echo error_field('nivel_montante', $errors); ?>"/>
+                            </div>
+                            <div class="field">
+                                <label>Nível Jusante (m):</label>
+                                <input type="text" name="multi[nivel_jusante]" maxlength='6' size='8' value="<?php echo Utils::escape($multi->getJusante()); ?>"                                   
+                                       class="text<?php echo error_field('nivel_jusante', $errors); ?>"/>
+                            </div>
+                        </div>
+                        <div class="box4 left" style="background-color:#f5f5f5;margin:2px;width:100px;height:110px;border-width:1px">                                                               
+                            <b>Chuva </b><hr />
+                            <div class="field" >   
+                                <label>Registar Chuva?</label> <input type="checkbox" name="onChuva" value="ON" />
+                                <label>Chuva (mm):</label>
+                                <input type='text' name="multi[chuva]"  maxlength='5' size='8' value="<?php echo Utils::escape($multi->getChuva()); ?>" class="text<?php echo error_field('chuva', $errors); ?>" />
+                            </div>
+                        </div>
+                        <div class="box4 left" style="background-color:#f5f5f5;margin:2px;width:200px;height:110px;border-width:1px">                                                                                       
+                            <b>Vazões</b><hr />
+                            <div class="field">       
+                                <label>Registrar Outras Vazões?</label> <input type="checkbox" name="onVazao" value="ON" />
+                                <label>Outras Estruturas (m³/s):</label>
+                                <input type='text' name="multi[vazao_outras_estruturas]"   maxlength='8' size='8' value="<?php echo Utils::escape($multi->getVazao_outras_estruturas()); ?>" class="text<?php echo error_field('vazao_outras_estruturas', $errors); ?>" />                                                                      
+                            </div>
+                        </div>  
+                    </div> 
+                    <div class="box4 center" style="background-color:#f5f5f5;margin:1px;width:590px;border-width:1px"> 
+                        <div class="box4 left" style="background-color:#f5f5f5;margin:2px;width:200px;height:110px;border-width:1px">
+                            <p style="color:#333"><b>Unidade Geradora 01</b> <hr />
+                            <div class="field">
+                                <label>Geração UG1:</label>
+                                <input type="text" name="multi[geracao_ug1]" maxlength='6' size='8' value="<?php echo Utils::escape($multi->getGeracao_ug1()); ?>"
+                                       class="text<?php echo error_field('geracao_ug1', $errors); ?>"/>
+                            </div>
+                            <div class="field">
+                                <label>Estado UG1:</label>
+                                <select name="multi[estadoug1]">
+                                    <?php foreach (Multi::allEstadoGerador1() as $estadoug1): ?>
+                                        <option value="<?php echo $estadoug1; ?>"
+                                        <?php if ($estadoug1 == $multi->getEstadoug1()): ?>
+                                                    selected="selected"
+                                                <?php endif; ?>
+                                                ><?php echo $estadoug1; ?></option>
+                                            <?php endforeach; ?>
+                                </select>
+                            </div> 
+                        </div> 
+                        <div class="box4 left" style="background-color:#f5f5f5;margin:2px;width:200px;height:110px;border-width:1px">
+                            <p style="color:#333"><b>Unidade Geradora 02</b> <hr />
+                            <div class="field">
+                                <label>Geração UG2:</label>
+                                <input type="text" name="multi[geracao_ug2]" maxlength='6' size='8' value="<?php echo Utils::escape($multi->getGeracao_ug2()); ?>"
+                                       class="text<?php echo error_field('geracao_ug2', $errors); ?>"/>
+                            </div>
+                            <div class="field">                           
+                                <label>Estado UG2:</label>
+                                <select name="multi[estadoug2]">
+                                    <?php foreach (Multi::allEstadoGerador2() as $estadoug2): ?>
+                                        <option value="<?php echo $estadoug2; ?>"
+                                        <?php if ($estadoug2 == $multi->getEstadoug2()): ?>
+                                                    selected="selected"
+                                                <?php endif; ?>
+                                                ><?php echo $estadoug2; ?></option>
+                                            <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Vazões -->
+                    <div class="box4 center" style="background-color:#f5f5f5;margin:1px;width:590px;border-width:1px"> 
+                        <div class="box3 left" style="background-color:#f5f5f5;margin:2px;width:200px;height:80px;border-width:1px">
+                            <p style="color:#333"><b>Indexador Vazão Vertida</b> <hr />
+                            <div class="field">
+                                <select name="multiuhpjindexador[indexador_vazao_vertida]">
+                                    <?php foreach (Multiuhpjindexador::allIndexadorVazaoVertida() as $indexador_vazao_vertida): ?>
+                                        <option value="<?php echo $indexador_vazao_vertida; ?>"
+                                        <?php if ($indexador_vazao_vertida == $multiuhpjindexador->getIndexador_vazao_vertida()): ?>
+                                                    selected="selected"
+                                                <?php endif; ?>
+                                                ><?php echo $indexador_vazao_vertida; ?></option>
+                                            <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="box3 left" style="background-color:#f5f5f5;margin:2px;width:200px;height:80px;border-width:1px">
+                            <p style="color:#333"><b>Indexador vazão outras estruturas</b> <hr />
+                            <div class="field">
+                                <select name="multiuhpjindexador[indexador_vazao_outras]">
+                                    <?php foreach (Multiuhpjindexador::allIndexadorVazaoOutras() as $indexador_vazao_outras): ?>
+                                        <option value="<?php echo $indexador_vazao_outras; ?>"
+                                        <?php if ($indexador_vazao_outras == $multiuhpjindexador->getIndexador_vazao_outras()): ?>
+                                                    selected="selected"
+                                                <?php endif; ?>
+                                                ><?php echo $indexador_vazao_outras; ?></option>
+                                            <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Comportas -->
+                    <div class="box4 center" style="background-color:#f5f5f5;margin:1px;width:590px;border-width:1px">
+                        <div class="box3 left" style="background-color:#f5f5f5;margin:1px;width:560px;height:130px;border-width:1px">
+                            <p style="color:#333"><b>Comportas</b> <hr />
+                            <table width="510" align="center"  cellpadding="2" cellspacing="1" class="JanelaBusca" >
+                                <tr>
+                                    <td width="70" >&nbsp;</td>
+                                    <td colspan="6" ><label class="menor">Segmento</label></td>
+                                    <td width="120" ><label>Basculante</label></td>
+                                </tr> 
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td width="40"><div align="center">C1</div></td>
+                                    <td width="40"><div align="center">C2</div></td>
+                                    <td width="40"><div align="center">C3</div></td>
+                                    <td width="40"><div align="center">C4</div></td>
+                                    <td width="40"><div align="center">C5</div></td>
+                                    <td width="40"><div align="center">C6</div></td>
+                                    <td>&nbsp;</td>
+                                </tr>                                                               
+                                <tr>
+                                    <td> <label class="menor">Aberturas (m):</label></td>
+                                    <td>
+                                        <div align="center">                                           
+                                            <input type="number" name="multiuhpjcomportas[comporta1]"  class="number" maxlength='6' size='6' step="0.10" min="0" max="10.00"  value="<?php echo Utils::escape($multiuhpjcomportas->getComporta1()); ?>" />
+                                        </div></td>
+                                    <td>
+                                        <div align="center">                                          
+                                            <input type="number" name="multiuhpjcomportas[comporta2]"  class="number" maxlength='6' size='6' step="0.10" min="0" max="10.00"  value="<?php echo Utils::escape($multiuhpjcomportas->getComporta2()); ?>" />
+                                        </div>
+                                    </td>
+                                    <td><div align="center">
+                                            <input type="number" name="multiuhpjcomportas[comporta3]" class="number" maxlength='6' size='6' step="0.10" min="0" max="10.00"  value="<?php echo Utils::escape($multiuhpjcomportas->getComporta3()); ?>" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div align="center">
+                                            <input type="number" name="multiuhpjcomportas[comporta4]" class="number" maxlength='6' size='6' step="0.10" min="0" max="10.00"  value="<?php echo Utils::escape($multiuhpjcomportas->getComporta4()); ?>"/>
+                                        </div>
+                                    </td>
+                                    <td><div align="center">
+                                            <input type="number" name="multiuhpjcomportas[comporta5]" class="number" maxlength='6' size='6' step="0.10" min="0" max="10.00"  value="<?php echo Utils::escape($multiuhpjcomportas->getComporta5()); ?>" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div align="center">
+                                            <input type="number" name="multiuhpjcomportas[comporta6]" class="number" maxlength='6' size='6' step="0.10" min="0" max="10.00"  value="<?php echo Utils::escape($multiuhpjcomportas->getComporta6()); ?>" />
+                                        </div>
+                                    </td>
+                                    <td align="center">
+                                        <input type="number" name="multiuhpjcomportas[comportabasc]" class="number" id="campobasc" maxlength='6' size='6' step="0.05" min="0" max="2.00"  value="<?php echo Utils::escape($multiuhpjcomportas->getComportabasc()); ?>" />
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td><label class="menor">Lâmina livre:</label></td>
+                                    <td> 
+                                        <div align="center">
+                                            <input name="cheklivrec1" type="checkbox" id="cheklivrec1">          
+                                        </div></td>
+                                    <td><div align="center">
+                                            <input name="cheklivrec2" type="checkbox" id="cheklivrec2">
+                                        </div>
+                                    </td>
+                                    <td> <div align="center">
+                                            <input name="cheklivrec3" type="checkbox" id="cheklivrec3">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div align="center">
+                                            <input name="cheklivrec4" type="checkbox" id="cheklivrec4">
+                                        </div></td><td> <div align="center">
+                                            <input name="cheklivrec5" type="checkbox" id="cheklivrec5">
+                                        </div></td>
+                                    <td><div align="center">
+                                            <input name="cheklivrec6" type="checkbox" id="cheklivrec6">
+                                        </div></td><td>&nbsp;</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="box3 center" style="background-color:#fcfcfc;margin:2px;width:590px;height:60px;border-color:#999;border-width:1px">                                                         
+                        <div class="box3" style="margin:2px 0; padding:2px; background-color:#f5f5f5">
+                            <input type="submit" name="cancel" value="CANCELA" class="botao" />
+                            <input type="submit" name="save" value="<?php echo $edit ? 'EDITA' : 'ADICIONA'; ?>" class="botao" />                
+                        </div>                  
+                    </div>
+                </fieldset>
+            </form>
+            <!--Final Formulario -->
+        </div>
+    </div>
+</section>
+
